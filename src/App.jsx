@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import ObjectsContainer from "./layouts/objects";
-import ProductContainer from "./layouts/Products";
 
 function App() {
 

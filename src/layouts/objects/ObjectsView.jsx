@@ -1,6 +1,6 @@
 import React from "react"
 
-const ObjectsView = ({ users, loading, error, setSearchObjects }) => {
+const ObjectsView = ({ data, loading, error, setSearchObjects }) => {
     return (
         <div>
             <h1>Lista de Usuarios</h1>
@@ -16,9 +16,12 @@ const ObjectsView = ({ users, loading, error, setSearchObjects }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.name}</td>
+                        {data.map((data) => (
+                            <tr key={data.id}>
+                                <td>{data.name}</td>
+                                <td>{data.color}</td>
+                                <td>{data.age}</td>
+                                <td>{data.power}</td>
                             </tr>
                         ))}
                     </tbody>
