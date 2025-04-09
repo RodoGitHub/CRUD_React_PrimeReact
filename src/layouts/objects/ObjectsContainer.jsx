@@ -9,7 +9,7 @@ const ObjectsContainer = () => {
     const [power, setPower] = useState("");
     const [editingId, setEditingId] = useState(null);
 
-    const API_URL = "https://crudcrud.com/api/d09cfc52d930433289a1e356fb166289/unicorns";
+    const API_URL = "https://crudcrud.com/api/7e1f21274de44c6f88529281f3b40112/unicorns";
 
     const getObjetos = async () => {
         try {

@@ -78,7 +78,7 @@ const ObjectsView = ({
             </DataTable>
 
             <footer className="mt-6 text-sm text-center text-gray-600">
-                <p><strong>Team:</strong> Rodo Palacio, Joni Detsplas, Nico Cardinali, Cristian Druetta</p>
+                <p><strong>Team:</strong> Rodo Palacios, Joni Detsplas, Nico Cardinali, Cristian Druetta</p>
             </footer>
         </div>
     );
