@@ -49,7 +49,7 @@ const ObjectsView = ({
                 <Button label="Buscar objetos" icon="pi pi-search" onClick={setSearchObjects} />
             </div>
 
-            <h2>Lista de Usuarios</h2>
+            <h2>Lista de Productos</h2>
             <DataTable value={data} stripedRows responsiveLayout="scroll">
                 <Column field="name" header="Nombre" />
                 <Column field="color" header="Color" />
