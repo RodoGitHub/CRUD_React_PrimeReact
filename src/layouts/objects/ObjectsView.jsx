@@ -1,118 +1,83 @@
-import React from "react"
+import React from "react";
+import { InputText } from 'primereact/inputtext';
+import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
-const ObjectsView = ({ 
-    data, 
-    name, 
-    setName, 
-    color, 
+const ObjectsView = ({
+    data,
+    name,
+    setName,
+    color,
     setColor,
-    age, 
-    setAge, 
-    power , 
-    setPower ,
+    age,
+    setAge,
+    power,
+    setPower,
     setSearchObjects,
-    handleSubmit ,
+    handleSubmit,
     onEditInit,
-    onDelete={onDelete}, 
-    editingId={editingId}}) => {
-    
-
+    onDelete,
+    editingId
+}) => {
     return (
-        <div>
+        <div className="p-4 w-11 md:w-8 lg:w-6">
+            <form onSubmit={handleSubmit} className="p-fluid p-formgrid p-grid gap-3 mb-4">
+                <div className="p-field p-col-12 p-md-6">
+                    <label htmlFor="name">Nombre</label>
+                    <InputText id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+                <div className="p-field p-col-12 p-md-6">
+                    <label htmlFor="color">Color</label>
+                    <InputText id="color" value={color} onChange={(e) => setColor(e.target.value)} required />
+                </div>
+                <div className="p-field p-col-12 p-md-6">
+                    <label htmlFor="age">Edad</label>
+                    <InputNumber id="age" value={parseInt(age)} onValueChange={(e) => setAge(e.value)} required useGrouping={false} />
+                </div>
+                <div className="p-field p-col-12 p-md-6">
+                    <label htmlFor="power">Poder</label>
+                    <InputText id="power" value={power} onChange={(e) => setPower(e.target.value)} required />
+                </div>
+                <div className="p-col-12">
+                    <Button type="submit" label={editingId ? "Actualizar" : "Guardar"} icon="pi pi-save" className="p-button-success" />
+                </div>
+            </form>
 
-            <div>
-                <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Nombre:</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={(e)=> setName(e.target.value)}
-                    required
-                /><br />
-
-                <label htmlFor="color">Color:</label>
-                <input
-                    type="text"
-                    id="color"
-                    name="color"
-                    value={color}
-                    onChange={(e)=> setColor(e.target.value)}
-                    required
-                /><br />
-
-                <label htmlFor="age">Edad:</label>
-                <input
-                    type="number"
-                    id="age"
-                    name="age"
-                    value={age}
-                    onChange={(e)=> setAge(e.target.value)}
-                    required
-                /><br />
-
-                <label htmlFor="power">Power:</label>
-                <input
-                    type="text"
-                    id="power"
-                    name="power"
-                    value={power}
-                    onChange={(e)=> setPower(e.target.value)}
-                    required
-                /><br />
-
-                <button type="submit">{editingId ? "Actualizar" : "Guardar"}</button>
-
-                </form>
+            <div className="mb-4">
+                <Button label="Buscar objetos" icon="pi pi-search" onClick={() => setSearchObjects(true)} />
             </div>
 
-            <h1>Lista de Usuarios</h1>
-            
-            <button onClick={() => setSearchObjects(true)}>buscar objetos</button>
-            
-
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Color</th>
-                            <th>Edad</th>
-                            <th>Power</th>
-                            <th>Editar</th>
-                            <th>Borrar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((data) => (
-                            <tr key={data._id}>
-                                <td>{data.name}</td>
-                                <td>{data.color}</td>
-                                <td>{data.age}</td>
-                                <td>{data.power}</td>
-                                <td> <Button
-                                        icon="pi pi-pencil"
-                                        className="p-button-warning p-button-sm"
-                                        onClick={() => onEditInit(data)}
-                                        tooltip="Editar"
-                                    />
-                                </td>
-                                <td> <Button
-                                        icon="pi pi-pencil"
-                                        className="p-button-warning p-button-sm"
-                                        onClick={() => onDelete(data)}
-                                        tooltip="Delete"
-                                    />
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            
+            <h2>Lista de Usuarios</h2>
+            <DataTable value={data} stripedRows responsiveLayout="scroll">
+                <Column field="name" header="Nombre" />
+                <Column field="color" header="Color" />
+                <Column field="age" header="Edad" />
+                <Column field="power" header="Poder" />
+                <Column
+                    header="Editar"
+                    body={(rowData) => (
+                        <Button
+                            icon="pi pi-pencil"
+                            className="p-button-warning p-button-sm"
+                            onClick={() => onEditInit(rowData)}
+                        />
+                    )}
+                />
+                <Column
+                    header="Eliminar"
+                    body={(rowData) => (
+                        <Button
+                            icon="pi pi-trash"
+                            className="p-button-danger p-button-sm"
+                            onClick={() => onDelete(rowData)}
+                        />
+                    )}
+                />
+            </DataTable>
         </div>
-    )
+    );
+};
 
-}
-
-export default ObjectsView
+export default ObjectsView;

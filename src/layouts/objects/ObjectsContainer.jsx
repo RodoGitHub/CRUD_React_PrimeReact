@@ -11,7 +11,6 @@ const ObjectsContainer = () => {
 
     const API_URL = "https://crudcrud.com/api/1c00d1236f8440a58c8e810ffa898075/unicorns";
 
-    // Obtener todos los objetos
     const getObjetos = async () => {
         try {
             const response = await fetch(API_URL);
@@ -22,7 +21,6 @@ const ObjectsContainer = () => {
         }
     };
 
-    // Crear o actualizar
     const handleSubmit = async (e) => {
         e.preventDefault();
         const object = { name, color, age, power };
@@ -31,16 +29,14 @@ const ObjectsContainer = () => {
             let response;
 
             if (editingId) {
-                // PUT (editar)
                 response = await fetch(`${API_URL}/${editingId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(object) // NO incluir _id
+                    body: JSON.stringify(object)
                 });
                 setEditingId(null);
-                await getObjetos(); // refresca lista
+                await getObjetos();
             } else {
-                // POST (crear nuevo)
                 response = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -48,10 +44,9 @@ const ObjectsContainer = () => {
                 });
 
                 const saved = await response.json();
-                setData((prev) => [...prev, saved]); // agrega a la lista
+                setData((prev) => [...prev, saved]);
             }
 
-            // Limpiar formulario
             setName("");
             setColor("");
             setAge("");
@@ -61,7 +56,6 @@ const ObjectsContainer = () => {
         }
     };
 
-    // Inicializar edición
     const onEditInit = (item) => {
         setName(item.name);
         setColor(item.color);
@@ -70,7 +64,6 @@ const ObjectsContainer = () => {
         setEditingId(item._id);
     };
 
-    // Eliminar objeto
     const onDelete = async (item) => {
         try {
             const response = await fetch(`${API_URL}/${item._id}`, {
@@ -84,7 +77,7 @@ const ObjectsContainer = () => {
     };
 
     useEffect(() => {
-        getObjetos(); // carga inicial
+        getObjetos();
     }, []);
 
     return (

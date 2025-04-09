@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import ObjectsContainer from "./layouts/objects";
 
 function App() {
-
   return (
-    <ObjectsContainer />
-
+    <div style={{ margin: "1rem" }}>
+      
+      <ObjectsContainer />
+    </div>
   );
 }
 
