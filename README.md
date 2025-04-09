@@ -17,13 +17,6 @@ Este proyecto es una aplicación simple de CRUD de "Unicornios" desarrollada con
 
 ---
 
-## 🛠️ Requisitos previos
-
-- Node.js v16 o superior
-- npm
-
----
-
 ## 📦 Instalación
 
 Cloná el repositorio y corré el proyecto:
