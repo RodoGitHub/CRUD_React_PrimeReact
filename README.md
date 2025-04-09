@@ -42,4 +42,4 @@ npm run dev
 - Filtro por nombre o color.
 - Modal (`Dialog`) para editar.
 - Modo oscuro.
-- Guardado offline con IndexedDB o localStorage.
+- Guardado offline en localStorage.
