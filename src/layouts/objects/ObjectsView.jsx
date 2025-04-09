@@ -34,7 +34,7 @@ const ObjectsView = ({
                 </div>
                 <div className="p-field p-col-12 p-md-6">
                     <label htmlFor="age">Edad</label>
-                    <InputNumber id="age" value={parseInt(age)} onValueChange={(e) => setAge(e.value)} required useGrouping={false} />
+                    <InputNumber inputId="age" value={parseInt(age)} onValueChange={(e) => setAge(e.value)} required useGrouping={false} />
                 </div>
                 <div className="p-field p-col-12 p-md-6">
                     <label htmlFor="power">Poder</label>
@@ -46,7 +46,7 @@ const ObjectsView = ({
             </form>
 
             <div className="mb-4">
-                <Button label="Buscar objetos" icon="pi pi-search" onClick={() => setSearchObjects(true)} />
+                <Button label="Buscar objetos" icon="pi pi-search" onClick={setSearchObjects} />
             </div>
 
             <h2>Lista de Usuarios</h2>
@@ -76,6 +76,10 @@ const ObjectsView = ({
                     )}
                 />
             </DataTable>
+
+            <footer className="mt-6 text-sm text-center text-gray-600">
+                <p><strong>Team:</strong> Rodo Palacio, Joni Detsplas, Nico Cardinali, Cristian Druetta</p>
+            </footer>
         </div>
     );
 };

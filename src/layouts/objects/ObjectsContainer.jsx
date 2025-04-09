@@ -9,12 +9,12 @@ const ObjectsContainer = () => {
     const [power, setPower] = useState("");
     const [editingId, setEditingId] = useState(null);
 
-    const API_URL = "https://crudcrud.com/api/1c00d1236f8440a58c8e810ffa898075/unicorns";
+    const API_URL = "https://crudcrud.com/api/d09cfc52d930433289a1e356fb166289/unicorns";
 
     const getObjetos = async () => {
         try {
             const response = await fetch(API_URL);
-            const json = await response.json();  
+            const json = await response.json();
             setData(json);
         } catch (e) {
             console.error("Error al obtener objetos:", e.message);
@@ -91,7 +91,7 @@ const ObjectsContainer = () => {
             setAge={setAge}
             power={power}
             setPower={setPower}
-            setSearchObjects={getObjetos} 
+            setSearchObjects={getObjetos}
             handleSubmit={handleSubmit}
             onEditInit={onEditInit}
             editingId={editingId}
