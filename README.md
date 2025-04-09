@@ -39,8 +39,6 @@ npm run dev
 
 ## 📦 Instalación de dependencias (si querés hacerlo manualmente)
 
-=======
-
 ```bash
 # Instalar React (si no lo tenés)
 npm install react react-dom
@@ -57,9 +55,9 @@ npm install primereact primeicons primeflex
 
 ```
 src/
-├── ObjectsContainer.jsx   # Lógica del CRUD
-├── ObjectsView.jsx        # Interfaz visual
-└── main.jsx               # Entrada principal
+├── ObjectsContainer.jsx  
+├── ObjectsView.jsx        
+└── main.jsx              
 ```
 
 ---
@@ -89,4 +87,4 @@ src/
 - Joni Detsplas
 - Nico Cardinali
 - Cristian Druetta
-  > > > > > > > 895a211 (style)
+ 
