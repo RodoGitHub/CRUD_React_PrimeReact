@@ -2,68 +2,109 @@ import { useState, useEffect } from "react";
 import ObjectsView from "./ObjectsView";
 
 const ObjectsContainer = () => {
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false)
-    const [searchObjects, setSearchObjects] = useState(false);
-   
-    const [data , setData] = useState([])
-    
+    const [data, setData] = useState([]);
+    const [name, setName] = useState("");
+    const [color, setColor] = useState("");
+    const [age, setAge] = useState("");
+    const [power, setPower] = useState("");
+    const [editingId, setEditingId] = useState(null);
 
+    const API_URL = "https://crudcrud.com/api/1c00d1236f8440a58c8e810ffa898075/unicorns";
 
-    const getObjects = async () => {
-        const bodyPost = {
-            name: 'laptop',
-            color: 'rojo',
-            age: 10,
-            power: 'prueba-power'
-
+    // Obtener todos los objetos
+    const getObjetos = async () => {
+        try {
+            const response = await fetch(API_URL);
+            const json = await response.json();  
+            setData(json);
+        } catch (e) {
+            console.error("Error al obtener objetos:", e.message);
         }
+    };
+
+    // Crear o actualizar
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const object = { name, color, age, power };
 
         try {
-            const response = await fetch('https://crudcrud.com/api/bebba3caeee2484ca4f1f5d18201e852/unicorns', {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json"
-                },
-                body: JSON.stringify(bodyPost) }
-                );
-            if (response.status === 200) {
-                const data = await response.json();
-                setUsers(data)
+            let response;
 
+            if (editingId) {
+                // PUT (editar)
+                response = await fetch(`${API_URL}/${editingId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(object) // NO incluir _id
+                });
+                setEditingId(null);
+                await getObjetos(); // refresca lista
             } else {
-                setError(response.statusText)
+                // POST (crear nuevo)
+                response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(object)
+                });
+
+                const saved = await response.json();
+                setData((prev) => [...prev, saved]); // agrega a la lista
             }
-        } catch (e) {
-            console.log(e.message)
-        } finally {
-            setLoading(false)
-            setSearchObjects(false)
+
+            // Limpiar formulario
+            setName("");
+            setColor("");
+            setAge("");
+            setPower("");
+        } catch (err) {
+            console.error("Error:", err.message);
         }
+    };
 
-    }
+    // Inicializar edición
+    const onEditInit = (item) => {
+        setName(item.name);
+        setColor(item.color);
+        setAge(item.age);
+        setPower(item.power);
+        setEditingId(item._id);
+    };
 
-
-    const getObjetos = async () => {
-        const response = await fetch('https://crudcrud.com/api/bebba3caeee2484ca4f1f5d18201e852/unicorns');
-        const data = await response.json();  
-        setData(data)          
-      };
-
+    // Eliminar objeto
+    const onDelete = async (item) => {
+        try {
+            const response = await fetch(`${API_URL}/${item._id}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) throw new Error("Error al eliminar");
+            await getObjetos();
+        } catch (err) {
+            console.error("Error al eliminar:", err.message);
+        }
+    };
 
     useEffect(() => {
-        if (searchObjects) {
-            setLoading(true)
-            getObjects();
-            getObjetos();
-        }
-    }, [searchObjects]);
+        getObjetos(); // carga inicial
+    }, []);
 
     return (
-        <ObjectsView data={data} loading={loading} error={error} setSearchObjects={setSearchObjects} />
-    )
+        <ObjectsView
+            data={data}
+            name={name}
+            setName={setName}
+            color={color}
+            setColor={setColor}
+            age={age}
+            setAge={setAge}
+            power={power}
+            setPower={setPower}
+            setSearchObjects={getObjetos} 
+            handleSubmit={handleSubmit}
+            onEditInit={onEditInit}
+            editingId={editingId}
+            onDelete={onDelete}
+        />
+    );
+};
 
-}
-
-export default ObjectsContainer
+export default ObjectsContainer;
