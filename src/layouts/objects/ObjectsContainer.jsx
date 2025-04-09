@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Toast } from "primereact/toast";
 import ObjectsView from "./ObjectsView";
 
 const ObjectsContainer = () => {
@@ -9,7 +10,8 @@ const ObjectsContainer = () => {
     const [power, setPower] = useState("");
     const [editingId, setEditingId] = useState(null);
 
-    const API_URL = "https://crudcrud.com/api/ea67321087e641449999f7f075afbcaf/unicorns";
+    const toast = useRef(null);
+    const API_URL = "https://crudcrud.com/api/7e1f21274de44c6f88529281f3b40112/unicorns";
 
     const getObjetos = async () => {
         try {
@@ -17,7 +19,12 @@ const ObjectsContainer = () => {
             const json = await response.json();
             setData(json);
         } catch (e) {
-            console.error("Error al obtener objetos:", e.message);
+            toast.current?.show({
+                severity: "error",
+                summary: "Error al cargar",
+                detail: e.message,
+                life: 3000,
+            });
         }
     };
 
@@ -34,8 +41,14 @@ const ObjectsContainer = () => {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(object)
                 });
-                setEditingId(null);
-                await getObjetos();
+
+                if (response.ok) {
+                    toast.current?.show({ severity: "success", summary: "Actualizado", detail: "El objeto fue actualizado" });
+                    setEditingId(null);
+                    await getObjetos();
+                } else {
+                    throw new Error("Error al actualizar");
+                }
             } else {
                 response = await fetch(API_URL, {
                     method: "POST",
@@ -43,8 +56,13 @@ const ObjectsContainer = () => {
                     body: JSON.stringify(object)
                 });
 
-                const saved = await response.json();
-                setData((prev) => [...prev, saved]);
+                if (response.ok) {
+                    const saved = await response.json();
+                    setData((prev) => [...prev, saved]);
+                    toast.current?.show({ severity: "success", summary: "Creado", detail: "Objeto guardado exitosamente" });
+                } else {
+                    throw new Error("Error al guardar");
+                }
             }
 
             setName("");
@@ -52,7 +70,7 @@ const ObjectsContainer = () => {
             setAge("");
             setPower("");
         } catch (err) {
-            console.error("Error:", err.message);
+            toast.current?.show({ severity: "error", summary: "Error", detail: err.message });
         }
     };
 
@@ -69,10 +87,13 @@ const ObjectsContainer = () => {
             const response = await fetch(`${API_URL}/${item._id}`, {
                 method: "DELETE",
             });
-            if (!response.ok) throw new Error("Error al eliminar");
+
+            if (!response.ok) throw new Error("No se pudo eliminar");
+
+            toast.current?.show({ severity: "success", summary: "Eliminado", detail: `${item.name} fue eliminado` });
             await getObjetos();
         } catch (err) {
-            console.error("Error al eliminar:", err.message);
+            toast.current?.show({ severity: "error", summary: "Error al eliminar", detail: err.message });
         }
     };
 
@@ -81,23 +102,27 @@ const ObjectsContainer = () => {
     }, []);
 
     return (
-        <ObjectsView
-            data={data}
-            name={name}
-            setName={setName}
-            color={color}
-            setColor={setColor}
-            age={age}
-            setAge={setAge}
-            power={power}
-            setPower={setPower}
-            setSearchObjects={getObjetos}
-            handleSubmit={handleSubmit}
-            onEditInit={onEditInit}
-            editingId={editingId}
-            onDelete={onDelete}
-        />
+        <>
+            <Toast ref={toast} />
+            <ObjectsView
+                data={data}
+                name={name}
+                setName={setName}
+                color={color}
+                setColor={setColor}
+                age={age}
+                setAge={setAge}
+                power={power}
+                setPower={setPower}
+                setSearchObjects={getObjetos}
+                handleSubmit={handleSubmit}
+                onEditInit={onEditInit}
+                editingId={editingId}
+                onDelete={onDelete}
+            />
+        </>
     );
 };
 
 export default ObjectsContainer;
+
